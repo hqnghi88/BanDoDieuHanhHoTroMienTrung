@@ -1,0 +1,126 @@
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BẢN ĐỒ ĐIỀU HÀNH HỖ TRỢ MIỀN TRUNG</title>
+    <!-- Bootstrap -->
+	<link href="css/bootstrap-4.3.1.css" rel="stylesheet">
+	 <link href="css/style.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.0/css/all.css" integrity="" crossorigin="anonymous">
+    <!-- MAP Leaflet -->	
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+	
+	<style>
+		#map {
+			height: 500px;
+		}
+		.info {
+			padding: 6px 8px; 
+			font: 14px/16px Arial, Helvetica, sans-serif; 
+			background: white; 
+			background: rgba(255,255,255,0.8); 
+			box-shadow: 0 0 15px rgba(0,0,0,0.2); 
+			border-radius: 5px; 
+		} 
+		.info h4 { 
+			margin: 0 0 5px;
+			color: #777; 
+		}
+		.legend {
+			text-align: left; 
+			line-height: 18px; 
+			color: #555; 
+		} 
+		.legend i { 
+			width: 18px; 
+			height: 18px; 
+			float: left; 
+			margin-right: 8px; 
+			opacity: 0.7; 
+		}
+	</style>
+  </head>
+  <body>
+  	<!-- body code goes here -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<header class="container-fluid">
+			<a class="navbar-brand" href="index.html"><img src="images/logo.png" alt="" height="46"></a>
+			<div><h4 class="text-danger">BẢN ĐỒ ĐIỀU HÀNH HỖ TRỢ MIỀN TRUNG</h4></div>
+
+		</header>
+    </nav>
+	<section class="pt-3 pb-3 mb-3">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-5 mb-3">
+					<div id='map' style="border: 1px solid black;"></div>
+				</div>
+				<div class="col-lg-7 mb-3">
+					<h5 class="text-danger">DANH SÁCH QUẬN HUYỆN - TỈNH QUẢNG BÌNH</h5>
+					<div style="line-height: 1.7;">
+						1. <a href="3-DaChonQuanHuyen.html">Thành phố Đồng Hới</a> <br/>
+						2. <a href="3-DaChonQuanHuyen.html">Huyện Bố Trạch</a> <br/>
+						3. <a href="3-DaChonQuanHuyen.html">Huyện Lệ Thủy</a> <br/>
+						4. <a href="3-DaChonQuanHuyen.html">Huyện Minh Hóa</a> <br/>
+						5. <a href="3-DaChonQuanHuyen.html">Huyện Quảng Ninh</a> <br/>
+						6. <a href="3-DaChonQuanHuyen.html">Huyện Quảng Trạch</a> <br/>
+						7. <a href="3-DaChonQuanHuyen.html">Huyện Tuyên Hóa</a> <br/>
+					</div>
+				</div>
+			</div>
+			<button type="button" class="btn btn-outline-secondary" onclick="window.location.href = 'index.html'">
+				<i class="fas fa-undo mr-1"></i>Quay lại
+			</button>
+		</div>
+	</section>
+	
+	<footer class="bg-light pt-3 pb-3">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6">
+					<h5><strong>Về iNhandao</strong></h5>
+					<p class="text-muted">Là nền tảng nhân đạo số kết nối các tấm lòng hảo tâm đến với những hoàn cảnh khó khăn, iNhandao hoạt động với mục tiêu nâng cao hiệu quả công tác xã hội hoá nhân đạo, giúp lan toả yêu thương ở mọi nơi, với mọi người. </p>
+					<h5><strong>Quy định</strong></h5>
+					 <ul class="nav">
+					  <li class="nav-item">
+						<a class="nav-link text-muted" href="#">Điều khoản sử dụng</a>
+					  </li>
+					  <li class="nav-item">
+						<a class="nav-link text-muted" href="#">Chính sách bảo mật</a>
+					  </li>
+					  <li class="nav-item">
+						<a class="nav-link text-muted" href="#">Câu hỏi thường gặp</a>
+					  </li>
+					</ul> 
+				</div>
+				<div class="col-md-5 offset-md-1">
+					<h5><strong>Thông tin liên hệ (Giai đoạn 2)</strong></h5>
+					<h6><strong>Hội Chữ thập đỏ Việt Nam (Ban Công tác xã hội)</strong></h6>
+					<ul class="list-unstyled text-muted">
+						<li><i class="fas fa-map-marker-alt mr-2"></i>Địa chỉ: 82 Nguyễn Du, Hà Nội</li>
+						<li><i class="fas fa-phone-alt mr-2"></i>Điện thoại: (+8424) 3822 4030 / Máy lẻ: 501-503-506 </li>
+						<li><i class="far fa-envelope mr-2"></i>Hòm thư điện tử: banctxh.vnrc@gmail.com</li>
+					</ul>
+					<img src="images/logo-viet.png" height="46" alt="">
+				</div>
+			</div>
+		</div>
+	 </footer>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+		<script src="js/jquery-3.3.1.min.js"></script>
+
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+		<script src="js/popper.min.js"></script> 
+		<script src="js/bootstrap-4.3.1.js"></script>
+		
+	<!-- map -->	
+	<script type="text/javascript" src="js/adm_region1.js"></script>
+	<script type="text/javascript" src="js/adm_region2.js"></script>
+	<script type="text/javascript" src="js/adm_region3.js"></script>
+	<script type="text/javascript" src="js/maplayers.js"></script>
+ 
+	</body>
+</html>

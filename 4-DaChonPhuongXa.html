@@ -1,0 +1,410 @@
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BẢN ĐỒ ĐIỀU HÀNH HỖ TRỢ MIỀN TRUNG</title>
+    <!-- Bootstrap -->
+	<link href="css/bootstrap-4.3.1.css" rel="stylesheet">
+	 <link href="css/style.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.0/css/all.css" integrity="" crossorigin="anonymous">
+	<!-- Chart JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.js"></script>
+    <!-- MAP Leaflet -->	
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+	
+	<style>
+		#map {
+			height: 500px;
+		}
+		.info {
+			padding: 6px 8px; 
+			font: 14px/16px Arial, Helvetica, sans-serif; 
+			background: white; 
+			background: rgba(255,255,255,0.8); 
+			box-shadow: 0 0 15px rgba(0,0,0,0.2); 
+			border-radius: 5px; 
+		} 
+		.info h4 { 
+			margin: 0 0 5px;
+			color: #777; 
+		}
+		.legend {
+			text-align: left; 
+			line-height: 18px; 
+			color: #555; 
+		} 
+		.legend i { 
+			width: 18px; 
+			height: 18px; 
+			float: left; 
+			margin-right: 8px; 
+			opacity: 0.7; 
+		}
+	</style>
+  </head>
+  <body>
+  	<!-- body code goes here -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<header class="container-fluid">
+			<a class="navbar-brand" href="index.html"><img src="images/logo.png" alt="" height="46"></a>
+			<div><h4 class="text-danger">BẢN ĐỒ ĐIỀU HÀNH HỖ TRỢ MIỀN TRUNG</h4></div>
+
+		</header>
+    </nav>
+	<section class="pt-3 pb-3 mb-3">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-5 mb-3">
+					<div id='map' style="border: 1px solid black;"></div>
+				</div>
+				<div class="col-lg-7 mb-3">
+					<h5 class="text-danger">THỊ TRẤN NÔNG TRƯỜNG VIỆT TRUNG - HUYỆN BỐ TRẠCH - TỈNH QUẢNG BÌNH</h5>
+					<div style="line-height: 1.7;">
+						<b>Chủ tịch xã: </b>Phan Văn Trưng <br/>
+						<b>Người đại diện: </b>Phan Văn Trưng<br/>
+						<b>Số điện thoại: </b>0913 430 568 <br/>
+						<b>Dân số: </b> 3.759 người <br/>
+						<b>Số hộ gia đình: </b> 945 hộ <br/>
+						<div>
+							<canvas id="hoGiaDinhChartBar" height="180"></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	<section class="pt-3 pb-3 mb-3">
+		<div class="container-fluid mb-15">
+			<div class="container">
+				<ul class="nav nav-tabs">
+					<li class="nav-item">
+						<a class="nav-link active" id="tab-1" 
+							data-toggle="tab" href="#tabCoCauNhuCauQuyTheoTien" 
+							role="tabCoCauNhuCauQuyTheoTien" aria-controls="tabCoCauNhuCauQuyTheoTien" 
+							aria-selected="true">
+							CƠ CẤU NHU CẦU QUY THEO TIỀN
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" id="tab-2" 
+							data-toggle="tab" href="#tabNhuCauKhanCau" 
+							role="tabNhuCauKhanCau" aria-controls="tabNhuCauKhanCau" 
+							aria-selected="true">
+							NHU CẦU KHẨN CẤP
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" id="tab-3" 
+							data-toggle="tab" href="#tabNhuCauNganTrungHan" 
+							role="tabNhuCauNganTrungHan" aria-controls="tabNhuCauNganTrungHan" 
+							aria-selected="true">
+							NHU CẦU NGẮN-TRUNG HẠN
+						</a>
+					</li>
+				</ul>
+				<div class="tab-content" id="myTabContent">
+					<div class="tab-pane fade show active" id="tabCoCauNhuCauQuyTheoTien" role="tabpanel" aria-labelledby="tab-1">
+						<div class="row mt-3">
+							<div class="col-lg-6 border-right" style="text-align: left;">
+								<b>CƠ CẤU NHU CẦU KHẨN CẤP QUY THEO TIỀN</b><br/><br/>
+								<canvas id="coCauNhuCauKhanCapQuyTheoTienChartPie" height="150"></canvas>
+							</div>
+							<div class="col-lg-6" style="text-align: left;">
+								<b>CƠ CẤU NHU CẦU NGẮN-TRUNG HẠN QUY THEO TIỀN</b><br/><br/>
+								<canvas id="coCauNhuCauNganTrungHanQuyTheoTienChartPie" height="150"></canvas>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="tabNhuCauKhanCau" role="tabpanel" aria-labelledby="tab-2">
+						<div class="mt-3">
+							<b>CẦU KHẨN CẤP: TỔNG CẦU TỐI THIỂU & CẦU ĐÃ ĐƯỢC ĐÁP ỨNG</b><br/><br/>
+							<canvas id="nhuCauKhanCapChartBar" height="100"></canvas>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="tabNhuCauNganTrungHan" role="tabpanel" aria-labelledby="tab-3">
+						<div class="mt-3">
+							<b>CẦU NGẮN-TRUNG HẠN: TỔNG CẦU TỐI THIỂU & CẦU ĐÃ ĐƯỢC ĐÁP ỨNG</b><br/><br/>
+							<canvas id="nhuCauNganTrungHanChartBar" height="100"></canvas>
+						</div>
+					</div>
+				</div>
+				
+				
+				<button type="button" class="btn btn-outline-secondary mt-3" onclick="window.location.href = '3-DaChonQuanHuyen.html'">
+					<i class="fas fa-undo mr-1"></i>Quay lại
+				</button>
+			</div>
+		</div>
+	</section>
+	
+	<footer class="bg-light pt-3 pb-3">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6">
+					<h5><strong>Về iNhandao</strong></h5>
+					<p class="text-muted">Là nền tảng nhân đạo số kết nối các tấm lòng hảo tâm đến với những hoàn cảnh khó khăn, iNhandao hoạt động với mục tiêu nâng cao hiệu quả công tác xã hội hoá nhân đạo, giúp lan toả yêu thương ở mọi nơi, với mọi người. </p>
+					<h5><strong>Quy định</strong></h5>
+					 <ul class="nav">
+					  <li class="nav-item">
+						<a class="nav-link text-muted" href="#">Điều khoản sử dụng</a>
+					  </li>
+					  <li class="nav-item">
+						<a class="nav-link text-muted" href="#">Chính sách bảo mật</a>
+					  </li>
+					  <li class="nav-item">
+						<a class="nav-link text-muted" href="#">Câu hỏi thường gặp</a>
+					  </li>
+					</ul> 
+				</div>
+				<div class="col-md-5 offset-md-1">
+					<h5><strong>Thông tin liên hệ (Giai đoạn 2)</strong></h5>
+					<h6><strong>Hội Chữ thập đỏ Việt Nam (Ban Công tác xã hội)</strong></h6>
+					<ul class="list-unstyled text-muted">
+						<li><i class="fas fa-map-marker-alt mr-2"></i>Địa chỉ: 82 Nguyễn Du, Hà Nội</li>
+						<li><i class="fas fa-phone-alt mr-2"></i>Điện thoại: (+8424) 3822 4030 / Máy lẻ: 501-503-506 </li>
+						<li><i class="far fa-envelope mr-2"></i>Hòm thư điện tử: banctxh.vnrc@gmail.com</li>
+					</ul>
+					<img src="images/logo-viet.png" height="46" alt="">
+				</div>
+			</div>
+		</div>
+	 </footer>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+		<script src="js/jquery-3.3.1.min.js"></script>
+
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+		<script src="js/popper.min.js"></script> 
+		<script src="js/bootstrap-4.3.1.js"></script>
+		
+	<!-- map -->	
+	<script type="text/javascript" src="js/adm_region1.js"></script>
+	<script type="text/javascript" src="js/adm_region2.js"></script>
+	<script type="text/javascript" src="js/adm_region3.js"></script>
+	<script type="text/javascript" src="js/maplayers.js"></script>
+ 
+	
+	<script>
+	var hoGiaDinhChart = document.getElementById('hoGiaDinhChartBar').getContext('2d');
+	var hoGiaDinhChartBar = new Chart(hoGiaDinhChart, {
+		type: 'horizontalBar',
+		data: {
+			labels: ['Đội 1 Lâm Trường Ba Rền', 'Tiểu Khu 1', 'Tiểu Khu 2', 'Tiểu Khu 3', 'Tiểu Khu 4', 'Tiểu Khu 5', 
+			'Tiểu Khu 6', 'Tiểu Khu 7', 'Tiểu Khu 8', 'Tiểu Khu 9', 'Tiểu Khu 10', 
+			'Tiểu Khu Dũng Cảm', 'Tiểu Khu Hữu Nghị', 'Tiểu Khu Quyết Tiến', 'Tiểu Khu Sao Vàng', 
+			'Tiểu Khu Tháng Lợi', 'Tiểu Khu Thống Nhất', 'Tiểu Khu Tiền Phong', 'Tiểu Khu Truyền Thống', 'Tiểu Khu Xung Kích'],
+			datasets: [{
+				label: 'Số hộ gia đình trong từng khu vực',
+				data: [44, 17, 30, 44, 35, 37, 20, 34, 16, 40, 14, 34, 14, 15, 23, 13, 19, 39, 22, 35],
+				borderColor: 'rgb(25,58,141)',
+				backgroundColor: 'rgb(163,217,255)',
+				borderWidth: 1
+			}]
+		},
+		options: {
+			scales: {
+				xAxes: [{
+					ticks: {
+						fontSize: 14,
+						fontColor: 'black',
+						callback: function(label) {
+							if (/\s/.test(label)) {
+								return label.split(" ");
+							}
+							else{
+								return label;
+							}              
+						}
+					} 
+				}],
+				yAxes: [{
+					ticks: {
+						beginAtZero: true,
+						fontSize: 12,
+						fontColor: 'black'
+					}
+				  }]
+			},
+			legend: {
+				display: false,
+				position: 'bottom',
+				labels: {
+					fontSize: 14,
+					fontColor: 'black'
+				}
+			}
+		}
+	});
+</script>
+
+<script>
+var coCauNhuCauKhanCapQuyTheoTienPie = document.getElementById('coCauNhuCauKhanCapQuyTheoTienChartPie').getContext('2d');
+var coCauNhuCauKhanCapQuyTheoTienChartPie = new Chart(coCauNhuCauKhanCapQuyTheoTienPie, {
+    type: 'pie',
+    data: {
+        labels: ['Lương thực', 'Nước sạch', 'Đồ giữ ấm & vệ sinh cá nhân', 'Tái thiết trước mắt', 'Phòng chống bão lũ', 'Tiền mặt'],
+		datasets: [{
+            label: '% quy đổi ra tiền',
+            data: [50, 89, 245, 657, 186, 1130],
+            backgroundColor: [
+                'rgba(38,68,120,0.5)', 'rgba(237,125,49,0.5)', 'rgba(165,165,165,0.5)', 'rgba(255,192,0,0.5)', 'rgba(91,155,213,0.5)', 'rgba(112,173,71,0.5)', 
+
+			],
+            borderColor: [
+                'rgb(38,68,120)', 
+				'rgb(237,125,49)', 
+				'rgb(165,165,165)', 
+				'rgb(255,192,0)', 
+				'rgb(91,155,213)', 
+				'rgb(112,173,71)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        animation:{
+			animateRotate:true
+		},
+		legend: {
+			position: 'right'
+		}
+    }
+});
+</script>
+
+<script>
+var coCauNhuCauNganTrungHanQuyTheoTienPie = document.getElementById('coCauNhuCauNganTrungHanQuyTheoTienChartPie').getContext('2d');
+var coCauNhuCauNganTrungHanQuyTheoTienChartPie = new Chart(coCauNhuCauNganTrungHanQuyTheoTienPie, {
+    type: 'pie',
+    data: {
+        labels: ['Lương thực', 'Nước sạch', 'Đồ giữ ấm & vệ sinh cá nhân', 'Tái thiết trước mắt', 'Khôi phục sản xuất kinh doanh (giống, vốn)', 'Phòng chống bão lũ', 'Tiền mặt'],
+		datasets: [{
+            label: '% quy đổi ra tiền',
+            data: [80, 220, 245, 657, 1174, 615, 1130],
+            backgroundColor: [
+                'rgba(38,68,120,0.5)', 'rgba(237,125,49,0.5)', 'rgba(165,165,165,0.5)', 'rgba(255,192,0,0.5)', 'rgba(146,208,80,0.5)', 'rgba(91,155,213,0.5)', 'rgba(112,173,71,0.5)'
+			],
+            borderColor: [
+                'rgb(38,68,120)', 'rgb(237,125,49)', 'rgb(165,165,165)', 'rgb(255,192,0)', 'rgb(146,208,80)', 'rgb(91,155,213)','rgb(112,173,71)'],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        animation:{
+			animateRotate:true
+		},
+		legend: {
+			position: 'right'
+		}
+    }
+});
+</script>
+
+<script>
+	var nhuCauKhanCapChart = document.getElementById('nhuCauKhanCapChartBar').getContext('2d');
+	var nhuCauKhanCapChartBar = new Chart(nhuCauKhanCapChart, {
+		type: 'bar',
+		data: {
+			datasets: [{
+				label: 'Cầu khẩn cấp',
+				data: [2714, 24, 121, 282, 682, 256, 1350],
+				borderColor: ['rgb(192,0,0)', 'rgb(255,20,52)', 'rgb(255,20,52)', 'rgb(255,20,52)', 'rgb(255,20,52)', 'rgb(255,20,52)', 'rgb(255,20,52)', ],
+				backgroundColor: ['rgb(192,0,0)', 'rgb(255,179,194)', 'rgb(255,179,194)', 'rgb(255,179,194)', 'rgb(255,179,194)', 'rgb(255,179,194)', 'rgb(255,179,194)'],
+				borderWidth: 1
+			},{
+				label: 'Cầu đã được đáp ứng',
+				data: [407, 24, 32, 36, 25, 70, 220],
+				backgroundColor: ['rgb(84,130,53)', 'rgb(146,208,80)', 'rgb(146,208,80)', 'rgb(146,208,80)', 'rgb(146,208,80)', 'rgb(146,208,80)', 'rgb(146,208,80)'],
+				borderColor: 'rgb(84,130,53)',
+				borderWidth: 1,
+			}],
+			labels: ['Tổng', 'Lương thực', 'Nước sạch', 'Đồ giữ ấm & vệ sinh cá nhân', 'Tái thiết trước mắt', 'Phòng chống bão lũ', 'Tiền mặt']
+		},
+		options: {
+			scales: {
+				xAxes: [{
+					gridLines: {
+						drawOnChartArea: true
+					  },
+					ticks: {
+						fontSize: 14,
+						fontColor: 'black'
+					} 
+				}],
+				yAxes: [{
+					ticks: {
+						beginAtZero: true,
+						fontSize: 14,
+						fontColor: 'black'
+					}
+				  }]
+			},
+			legend: {
+				position: 'bottom',
+				labels: {
+					fontSize: 14,
+					fontColor: 'black'
+				}
+			},
+			
+		}
+	});
+</script>
+
+<script>
+	var nhuCauNganTrungHanChart = document.getElementById('nhuCauNganTrungHanChartBar').getContext('2d');
+	var nhuCauNganTrungHanChartBar = new Chart(nhuCauNganTrungHanChart, {
+		type: 'bar',
+		data: {
+			datasets: [{
+				label: 'Cầu khẩn cấp',
+				data: [2714, 24, 121, 282, 682, 256, 1350],
+				borderColor: ['rgb(192,0,0)', 'rgb(255,20,52)', 'rgb(255,20,52)', 'rgb(255,20,52)', 'rgb(255,20,52)', 'rgb(255,20,52)', 'rgb(255,20,52)', ],
+				backgroundColor: ['rgb(192,0,0)', 'rgb(255,179,194)', 'rgb(255,179,194)', 'rgb(255,179,194)', 'rgb(255,179,194)', 'rgb(255,179,194)', 'rgb(255,179,194)'],
+				borderWidth: 1
+			},{
+				label: 'Cầu đã được đáp ứng',
+				data: [407, 24, 32, 36, 25, 70, 220],
+				backgroundColor: ['rgb(84,130,53)', 'rgb(146,208,80)', 'rgb(146,208,80)', 'rgb(146,208,80)', 'rgb(146,208,80)', 'rgb(146,208,80)', 'rgb(146,208,80)'],
+				borderColor: 'rgb(84,130,53)',
+				borderWidth: 1,
+			}],
+			labels: ['Tổng', 'Lương thực', 'Nước sạch', 'Đồ giữ ấm & vệ sinh cá nhân', 'Tái thiết trước mắt', 'Phòng chống bão lũ', 'Tiền mặt']
+		},
+		options: {
+			scales: {
+				xAxes: [{
+					gridLines: {
+						drawOnChartArea: true
+					  },
+					ticks: {
+						fontSize: 14,
+						fontColor: 'black'
+					} 
+				}],
+				yAxes: [{
+					ticks: {
+						beginAtZero: true,
+						fontSize: 14,
+						fontColor: 'black'
+					}
+				  }]
+			},
+			legend: {
+				position: 'bottom',
+				labels: {
+					fontSize: 14,
+					fontColor: 'black'
+				}
+			},
+			
+		}
+	});
+</script>
+
+	
+	</body>
+</html>
