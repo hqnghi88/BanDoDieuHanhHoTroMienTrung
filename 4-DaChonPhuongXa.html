@@ -188,19 +188,20 @@
  
  
 	<script>
-	
-	
-	var url = "https://spreadsheets.google.com/feeds/cells/1jkIX-MT5lDCOopcrTOvWdi5knaMd2SHwNiwrw4uPxyc/od6/public/basic?alt=json";
+	//https://docs.google.com/spreadsheets/d/1S4iJIgwq6Iq8JU-ShCliX_DfBglmcYzc0x1lCxK_cjg/edit?usp=sharing
+	var url = "https://spreadsheets.google.com/feeds/cells/1S4iJIgwq6Iq8JU-ShCliX_DfBglmcYzc0x1lCxK_cjg/od6/public/basic?alt=json";
 $.ajax({
     url:url,
     dataType:"jsonp",
     success:function(data) {
         // data.feed.entry is an array of objects that represent each cell
-
+		console.log(data.feed.entry);
+/*
 		var i;
 for (i = 1; i < 80; i++) {
 		console.log(data.feed.entry[i*7+0].content.$t,data.feed.entry[i*7+1].content.$t,data.feed.entry[i*7+2].content.$t);
 }
+*/
     },
 });
 	

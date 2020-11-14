@@ -1,5 +1,19 @@
 
-		var map = L.map('map').setView([15.0376435,107.5341797], 6);
+	const queryString = window.location.search;
+
+	const urlParams = new URLSearchParams(queryString);
+
+	 province = urlParams.get('p');
+	//console.log(province); 
+
+	 district = urlParams.get('d');
+	//console.log(district); 
+
+	 commune = urlParams.get('c');
+	//console.log(commune);
+	
+
+	var map = L.map('map').setView([15.0376435,107.5341797], 6);
 		
 		L.tileLayer('https://maps.vietmap.vn/api/tm/{z}/{x}/{y}.png?apikey=383a90729d0590f9e1074083a11791ff64767fb56c1d9c4f', {
 		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
@@ -40,6 +54,7 @@ function clean_map() {
         //Do marker specific actions here
 
         {
+			//layer._leaflet_id = null;
             map.removeLayer(layer);
 
         }
@@ -58,11 +73,11 @@ function zoom_based_layerchange() {
             adm1.addTo(map);  
            // $("#layername").html("Coors Field");
     }
-    if (currentZoom>=8 && currentZoom<9 ) {  
+    if (currentZoom>=8 && currentZoom<10 ) {  
             clean_map();
             adm2.addTo(map);  
 	}
-    if (currentZoom>=9) { 
+    if (currentZoom>=10) { 
             clean_map();
 			adm3.addTo(map);
 	}
@@ -123,31 +138,60 @@ function zoom_based_layerchange() {
 			map.fitBounds(e.target.getBounds());
 		}
 
-		function onEachFeature(feature, layer) {
+		function onEachFeature1(feature, layer) {
+			layer.on({
+				mouseover: highlightFeature,
+				mouseout: resetHighlight,
+				click: zoomToFeature
+			});        
+			layer.on('click', function (e) {        
+				province=e.target.feature.properties.gid; 
+			}); 
+		}
+
+		function onEachFeature2(feature, layer) {
+			layer.on({
+				mouseover: highlightFeature,
+				mouseout: resetHighlight,
+				click: zoomToFeature
+			}); 
+			layer.on('click', function (e) {        
+				district=e.target.feature.properties.gid; 
+			}); 
+		}
+var layers = {};
+		function onEachFeature3(feature, layer) {
 			layer.on({
 				mouseover: highlightFeature,
 				mouseout: resetHighlight,
 				click: zoomToFeature
 			});
+			layers[feature.properties.gid] = layer;
+
+			//layer._leaflet_id = feature.id;  
+			layer.on('click', function (e) {    
+				commune=e.target.feature.properties.gid; 
+				console.log(commune);    
+			}); 
 		}
 
 		adm1 = L.geoJson(mydata1, {
 			style: style,
-			onEachFeature: onEachFeature
+			onEachFeature: onEachFeature1
 		}).addTo(map);
 
 		adm2 = L.geoJson(mydata2, {
 			style: style,
-			onEachFeature: onEachFeature
+			onEachFeature: onEachFeature2
 		});//.addTo(map);
 
 		adm3 = L.geoJson(mydata3, {
 			style: style,
-			onEachFeature: onEachFeature
-		}).on('click', function (e) {
-			window.location.href ="4-DaChonPhuongXa.html"; 
+			onEachFeature: onEachFeature3
+		}).on('click', function (e) { 
+			window.location.href ="4-DaChonPhuongXa.html?p="+province+"&d="+district+"&c="+commune; 
 		  });//.addTo(map);
-
+		   
 		map.attributionControl.addAttribution('Data &copy; <a href="http://antoancovid.dtt.vn/admin/hotro">iNhanDao</a>');
 
 
@@ -174,3 +218,9 @@ function zoom_based_layerchange() {
 		};
 
 		legend.addTo(map);
+		
+		
+//console.log(layers[commune]);
+if(commune){	
+map.fitBounds(layers[commune].getBounds());
+}
