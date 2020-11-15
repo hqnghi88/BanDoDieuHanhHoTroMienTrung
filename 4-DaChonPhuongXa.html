@@ -62,9 +62,9 @@
 				<div class="col-lg-7 mb-3">
 					<div id="_region"><h5 class="text-danger"></h5></div>
 					<div style="line-height: 1.7;">
-						<b>Chủ tịch xã: </b>  <br/>
-						<b>Người đại diện: </b> <br/>
-						<b>Số điện thoại: </b> <br/>
+						<div id="_chutich"><b>Chủ tịch xã: </b>  </div>
+						<div id="_nguoidaidien"><b>Người đại diện: </b> </div>
+						<div id="_sodt"><b>Số điện thoại: </b> </div>
 						<div id="_danso"><b>Dân số: </b></div>  
 						<div id="_hogiadinh"><b>Số hộ gia đình: </b></div>
 						<div>
@@ -105,6 +105,14 @@
 							CƠ CẤU NHU CẦU QUY THEO TIỀN
 						</a>
 					</li>
+					<li class="nav-item">
+						<a class="nav-link" id="tab-2" 
+							data-toggle="tab" href="#tabThongTinChiTiet" 
+							role="tabThongTinChiTiet" aria-controls="tabThongTinChiTiet" 
+							aria-selected="true">
+							THÔNG TIN CHI TIẾT
+						</a>
+					</li>
 				</ul>
 				<div class="tab-content" id="myTabContent">					
 					<div class="tab-pane fade show active" id="tabNhuCauKhanCau" role="tabpanel" aria-labelledby="tab-1">
@@ -129,6 +137,11 @@
 								<b>CƠ CẤU NHU CẦU NGẮN-TRUNG HẠN QUY THEO TIỀN</b><br/><br/>
 								<canvas id="coCauNhuCauNganTrungHanQuyTheoTienChartPie" height="150"></canvas>
 							</div>
+						</div>
+					</div>								
+					<div class="tab-pane fade" id="tabThongTinChiTiet" role="tabpanel" aria-labelledby="tab-3">
+						<div class="mt-3"> 
+							<div id="_thongtinchitiet"></div>
 						</div>
 					</div>
 				</div>
@@ -193,110 +206,199 @@
 		document.getElementById('_region').innerHTML ="<h5 class='text-danger'>"+layers[commune].feature.properties.name3+" - "+layers[commune].feature.properties.name2+" - "+layers[commune].feature.properties.name1+"</h5>";
 	
 	}
-	//https://docs.google.com/spreadsheets/d/1S4iJIgwq6Iq8JU-ShCliX_DfBglmcYzc0x1lCxK_cjg/edit?usp=sharing
-	//var url = "https://spreadsheets.google.com/feeds/cells/1S4iJIgwq6Iq8JU-ShCliX_DfBglmcYzc0x1lCxK_cjg/od6/public/basic?alt=json";
-	//var url="https://docs.google.com/spreadsheets/d/1S4iJIgwq6Iq8JU-ShCliX_DfBglmcYzc0x1lCxK_cjg/edit?usp=sharing"
-	var url_thongtin="https://spreadsheets.google.com/feeds/cells/1S4iJIgwq6Iq8JU-ShCliX_DfBglmcYzc0x1lCxK_cjg/2/public/values?alt=json";
-	//var url="https://spreadsheets.google.com/feeds/cells/1HeUDy-zQkDyjwz_0wt7TFtsarBAII5Q8T7Tb4be8FH8/2/public/values?alt=json";
+			
 	
-$.ajax({
-    url:url_thongtin,
-    dataType:"jsonp",
-    success:function(data) {
-        // data.feed.entry is an array of objects that represent each cell
-		//console.log(data.feed.entry);
-		
-		document.getElementById('_danso').innerHTML ="<b>Dân số: </b> "+data.feed.entry[14].content.$t+" người";
-		document.getElementById('_hogiadinh').innerHTML ="<b>Số hộ gia đình: </b> "+data.feed.entry[28].content.$t+" hộ";
-/*
-		var i;
-for (i = 1; i < 80; i++) {
-		console.log(data.feed.entry[i*7+0].content.$t,data.feed.entry[i*7+1].content.$t,data.feed.entry[i*7+2].content.$t);
-}
-*/
-    },
-});
-	
-	
-	var url_report="https://spreadsheets.google.com/feeds/cells/1S4iJIgwq6Iq8JU-ShCliX_DfBglmcYzc0x1lCxK_cjg/13/public/values?alt=json"; 
+	var gsheet_id="1S4iJIgwq6Iq8JU-ShCliX_DfBglmcYzc0x1lCxK_cjg";
+	var data_hogiadinh_lb=[]; 
+	var data_hogiadinh_nb=[];
 	var data_caukhancap=[];
 	var data_caukhancap_dapung=[];
 	var data_caukhancap_thieu_tien=[];
 	var data_caungantrunghan=[];
 	var data_caungantrunghan_dapung=[];
 	var data_caungantrunghan_thieu_tien=[];
-$.ajax({
-    url:url_report,
-    dataType:"jsonp",
-    success:function(data) {
-        // data.feed.entry is an array of objects that represent each cell
-		//console.log(data.feed.entry);
-		data_caukhancap.push(data.feed.entry.find(t=>t.title.$t ==='Y29').gs$cell.numericValue);
-		data_caukhancap.push(data.feed.entry.find(t=>t.title.$t ==='Y30').gs$cell.numericValue);
-		data_caukhancap.push(data.feed.entry.find(t=>t.title.$t ==='Y31').gs$cell.numericValue);
-		data_caukhancap.push(data.feed.entry.find(t=>t.title.$t ==='Y32').gs$cell.numericValue);
-		data_caukhancap.push(data.feed.entry.find(t=>t.title.$t ==='Y33').gs$cell.numericValue);
-		data_caukhancap.push(data.feed.entry.find(t=>t.title.$t ==='Y34').gs$cell.numericValue);
-		data_caukhancap.push(data.feed.entry.find(t=>t.title.$t ==='Y35').gs$cell.numericValue);
-		
-		data_caukhancap_dapung.push(data.feed.entry.find(t=>t.title.$t ==='Z29').gs$cell.numericValue);
-		data_caukhancap_dapung.push(data.feed.entry.find(t=>t.title.$t ==='Z30').gs$cell.numericValue);
-		data_caukhancap_dapung.push(data.feed.entry.find(t=>t.title.$t ==='Z31').gs$cell.numericValue);
-		data_caukhancap_dapung.push(data.feed.entry.find(t=>t.title.$t ==='Z32').gs$cell.numericValue);
-		data_caukhancap_dapung.push(data.feed.entry.find(t=>t.title.$t ==='Z33').gs$cell.numericValue);
-		data_caukhancap_dapung.push(data.feed.entry.find(t=>t.title.$t ==='Z34').gs$cell.numericValue);
-		data_caukhancap_dapung.push(data.feed.entry.find(t=>t.title.$t ==='Z35').gs$cell.numericValue);
-		
-		data_caukhancap_thieu_tien.push(data.feed.entry.find(t=>t.title.$t ==='Y19').gs$cell.numericValue);
-		data_caukhancap_thieu_tien.push(data.feed.entry.find(t=>t.title.$t ==='Y20').gs$cell.numericValue);
-		data_caukhancap_thieu_tien.push(data.feed.entry.find(t=>t.title.$t ==='Y21').gs$cell.numericValue);
-		data_caukhancap_thieu_tien.push(data.feed.entry.find(t=>t.title.$t ==='Y22').gs$cell.numericValue);
-		data_caukhancap_thieu_tien.push(data.feed.entry.find(t=>t.title.$t ==='Y23').gs$cell.numericValue);
-		data_caukhancap_thieu_tien.push(data.feed.entry.find(t=>t.title.$t ==='Y24').gs$cell.numericValue); 
-		
-		
-		
-		
-		data_caungantrunghan.push(data.feed.entry.find(t=>t.title.$t ==='M29').gs$cell.numericValue);
-		data_caungantrunghan.push(data.feed.entry.find(t=>t.title.$t ==='M30').gs$cell.numericValue);
-		data_caungantrunghan.push(data.feed.entry.find(t=>t.title.$t ==='M31').gs$cell.numericValue);
-		data_caungantrunghan.push(data.feed.entry.find(t=>t.title.$t ==='M32').gs$cell.numericValue);
-		data_caungantrunghan.push(data.feed.entry.find(t=>t.title.$t ==='M33').gs$cell.numericValue);
-		data_caungantrunghan.push(data.feed.entry.find(t=>t.title.$t ==='M34').gs$cell.numericValue);
-		data_caungantrunghan.push(data.feed.entry.find(t=>t.title.$t ==='M35').gs$cell.numericValue);
-		data_caungantrunghan.push(data.feed.entry.find(t=>t.title.$t ==='M36').gs$cell.numericValue);
-		
-		data_caungantrunghan_dapung.push(data.feed.entry.find(t=>t.title.$t ==='N29').gs$cell.numericValue);
-		data_caungantrunghan_dapung.push(data.feed.entry.find(t=>t.title.$t ==='N30').gs$cell.numericValue);
-		data_caungantrunghan_dapung.push(data.feed.entry.find(t=>t.title.$t ==='N31').gs$cell.numericValue);
-		data_caungantrunghan_dapung.push(data.feed.entry.find(t=>t.title.$t ==='N32').gs$cell.numericValue);
-		data_caungantrunghan_dapung.push(data.feed.entry.find(t=>t.title.$t ==='N33').gs$cell.numericValue);
-		data_caungantrunghan_dapung.push(data.feed.entry.find(t=>t.title.$t ==='N34').gs$cell.numericValue);
-		data_caungantrunghan_dapung.push(data.feed.entry.find(t=>t.title.$t ==='N35').gs$cell.numericValue);
-		data_caungantrunghan_dapung.push(data.feed.entry.find(t=>t.title.$t ==='N36').gs$cell.numericValue);
-		
-		data_caungantrunghan_thieu_tien.push(data.feed.entry.find(t=>t.title.$t ==='N4').gs$cell.numericValue);
-		data_caungantrunghan_thieu_tien.push(data.feed.entry.find(t=>t.title.$t ==='N7').gs$cell.numericValue);
-		data_caungantrunghan_thieu_tien.push(data.feed.entry.find(t=>t.title.$t ==='N9').gs$cell.numericValue);
-		data_caungantrunghan_thieu_tien.push(data.feed.entry.find(t=>t.title.$t ==='N10').gs$cell.numericValue);
-		data_caungantrunghan_thieu_tien.push(data.feed.entry.find(t=>t.title.$t ==='N11').gs$cell.numericValue);
-		data_caungantrunghan_thieu_tien.push(data.feed.entry.find(t=>t.title.$t ==='N12').gs$cell.numericValue);
-		data_caungantrunghan_thieu_tien.push(data.feed.entry.find(t=>t.title.$t ==='N13').gs$cell.numericValue);
-nhuCauKhanCapChartBar.update();
-coCauNhuCauKhanCapQuyTheoTienChartPie.update();
-nhuCauNganTrungHanChartBar.update();
-coCauNhuCauNganTrungHanQuyTheoTienChartPie.update();
-		//document.getElementById('_danso').innerHTML ="<b>Dân số: </b> "+data.feed.entry[14].content.$t+" người";
-		//document.getElementById('_hogiadinh').innerHTML ="<b>Số hộ gia đình: </b> "+data.feed.entry[28].content.$t+" hộ";
-    },
-});
+	//https://docs.google.com/spreadsheets/d/1S4iJIgwq6Iq8JU-ShCliX_DfBglmcYzc0x1lCxK_cjg/edit?usp=sharing
+	//var url = "https://spreadsheets.google.com/feeds/cells/1S4iJIgwq6Iq8JU-ShCliX_DfBglmcYzc0x1lCxK_cjg/od6/public/basic?alt=json";
+	//var url="https://docs.google.com/spreadsheets/d/1S4iJIgwq6Iq8JU-ShCliX_DfBglmcYzc0x1lCxK_cjg/edit?usp=sharing"
+	function fetch_data(){ 
+		var url_lienhe="https://spreadsheets.google.com/feeds/cells/"+gsheet_id+"/1/public/values?alt=json";
+
+		$.ajax({
+			url:url_lienhe,
+			dataType:"jsonp",
+			success:function(data) {
+				document.getElementById('_chutich').innerHTML ="<b>Chủ tịch xã: </b> "+data.feed.entry.find(t=>t.title.$t ==='B7').content.$t+"";
+				document.getElementById('_nguoidaidien').innerHTML ="<b>Người đại diện: </b> "+data.feed.entry.find(t=>t.title.$t ==='B12').content.$t+"";
+				document.getElementById('_sodt').innerHTML ="<b>Số điện thoại: </b> "+data.feed.entry.find(t=>t.title.$t ==='B13').content.$t+"";
+			},
+		});
+			
+			
+		var url_thongtin="https://spreadsheets.google.com/feeds/cells/"+gsheet_id+"/2/public/values?alt=json";
+
+		$.ajax({
+			url:url_thongtin,
+			dataType:"jsonp",
+			success:function(data) {
+				document.getElementById('_danso').innerHTML ="<b>Dân số: </b> "+data.feed.entry.find(t=>t.title.$t ==='C9').content.$t+" người";
+				document.getElementById('_hogiadinh').innerHTML ="<b>Số hộ gia đình: </b> "+data.feed.entry.find(t=>t.title.$t ==='C13').content.$t+" hộ";
+				var i=25;
+				while(data.feed.entry.find(t=>t.title.$t ==('B'+i))!=null){
+					//console.log(data.feed.entry.find(t=>t.title.$t ==('B'+i)) );
+					data_hogiadinh_lb.push(data.feed.entry.find(t=>t.title.$t ==('B'+i)).content.$t);
+					data_hogiadinh_nb.push(Math.round(data.feed.entry.find(t=>t.title.$t ==('C'+i)).gs$cell.numericValue));
+					i++;
+				} 
+				hoGiaDinhChartBar.update();
+			},
+		});
+			
+			
+		var url_report="https://spreadsheets.google.com/feeds/cells/"+gsheet_id+"/13/public/values?alt=json"; 
+			
+		$.ajax({
+			url:url_report,
+			dataType:"jsonp",
+			success:function(data) {
+				// data.feed.entry is an array of objects that represent each cell
+				//console.log(data.feed.entry);
+				data_caukhancap.push(Math.round(data.feed.entry.find(t=>t.title.$t =='Y29').gs$cell.numericValue));
+				data_caukhancap.push(Math.round(data.feed.entry.find(t=>t.title.$t =='Y30').gs$cell.numericValue));
+				data_caukhancap.push(Math.round(data.feed.entry.find(t=>t.title.$t =='Y31').gs$cell.numericValue));
+				data_caukhancap.push(Math.round(data.feed.entry.find(t=>t.title.$t =='Y32').gs$cell.numericValue));
+				data_caukhancap.push(Math.round(data.feed.entry.find(t=>t.title.$t =='Y33').gs$cell.numericValue));
+				data_caukhancap.push(Math.round(data.feed.entry.find(t=>t.title.$t =='Y34').gs$cell.numericValue));
+				data_caukhancap.push(Math.round(data.feed.entry.find(t=>t.title.$t =='Y35').gs$cell.numericValue));
+				
+				data_caukhancap_dapung.push(Math.round(data.feed.entry.find(t=>t.title.$t =='Z29').gs$cell.numericValue));
+				data_caukhancap_dapung.push(Math.round(data.feed.entry.find(t=>t.title.$t =='Z30').gs$cell.numericValue));
+				data_caukhancap_dapung.push(Math.round(data.feed.entry.find(t=>t.title.$t =='Z31').gs$cell.numericValue));
+				data_caukhancap_dapung.push(Math.round(data.feed.entry.find(t=>t.title.$t =='Z32').gs$cell.numericValue));
+				data_caukhancap_dapung.push(Math.round(data.feed.entry.find(t=>t.title.$t =='Z33').gs$cell.numericValue));
+				data_caukhancap_dapung.push(Math.round(data.feed.entry.find(t=>t.title.$t =='Z34').gs$cell.numericValue));
+				data_caukhancap_dapung.push(Math.round(data.feed.entry.find(t=>t.title.$t =='Z35').gs$cell.numericValue));
+				
+				data_caukhancap_thieu_tien.push(Math.round(data.feed.entry.find(t=>t.title.$t =='Y19').gs$cell.numericValue));
+				data_caukhancap_thieu_tien.push(Math.round(data.feed.entry.find(t=>t.title.$t =='Y20').gs$cell.numericValue));
+				data_caukhancap_thieu_tien.push(Math.round(data.feed.entry.find(t=>t.title.$t =='Y21').gs$cell.numericValue));
+				data_caukhancap_thieu_tien.push(Math.round(data.feed.entry.find(t=>t.title.$t =='Y22').gs$cell.numericValue));
+				data_caukhancap_thieu_tien.push(Math.round(data.feed.entry.find(t=>t.title.$t =='Y23').gs$cell.numericValue));
+				data_caukhancap_thieu_tien.push(Math.round(data.feed.entry.find(t=>t.title.$t =='Y24').gs$cell.numericValue)); 
+				
+				
+				
+				
+				data_caungantrunghan.push(Math.round(data.feed.entry.find(t=>t.title.$t =='M29').gs$cell.numericValue));
+				data_caungantrunghan.push(Math.round(data.feed.entry.find(t=>t.title.$t =='M30').gs$cell.numericValue));
+				data_caungantrunghan.push(Math.round(data.feed.entry.find(t=>t.title.$t =='M31').gs$cell.numericValue));
+				data_caungantrunghan.push(Math.round(data.feed.entry.find(t=>t.title.$t =='M32').gs$cell.numericValue));
+				data_caungantrunghan.push(Math.round(data.feed.entry.find(t=>t.title.$t =='M33').gs$cell.numericValue));
+				data_caungantrunghan.push(Math.round(data.feed.entry.find(t=>t.title.$t =='M34').gs$cell.numericValue));
+				data_caungantrunghan.push(Math.round(data.feed.entry.find(t=>t.title.$t =='M35').gs$cell.numericValue));
+				data_caungantrunghan.push(Math.round(data.feed.entry.find(t=>t.title.$t =='M36').gs$cell.numericValue));
+				
+				data_caungantrunghan_dapung.push(Math.round(data.feed.entry.find(t=>t.title.$t =='N29').gs$cell.numericValue));
+				data_caungantrunghan_dapung.push(Math.round(data.feed.entry.find(t=>t.title.$t =='N30').gs$cell.numericValue));
+				data_caungantrunghan_dapung.push(Math.round(data.feed.entry.find(t=>t.title.$t =='N31').gs$cell.numericValue));
+				data_caungantrunghan_dapung.push(Math.round(data.feed.entry.find(t=>t.title.$t =='N32').gs$cell.numericValue));
+				data_caungantrunghan_dapung.push(Math.round(data.feed.entry.find(t=>t.title.$t =='N33').gs$cell.numericValue));
+				data_caungantrunghan_dapung.push(Math.round(data.feed.entry.find(t=>t.title.$t =='N34').gs$cell.numericValue));
+				data_caungantrunghan_dapung.push(Math.round(data.feed.entry.find(t=>t.title.$t =='N35').gs$cell.numericValue));
+				data_caungantrunghan_dapung.push(Math.round(data.feed.entry.find(t=>t.title.$t =='N36').gs$cell.numericValue));
+				
+				data_caungantrunghan_thieu_tien.push(Math.round(data.feed.entry.find(t=>t.title.$t =='N4').gs$cell.numericValue));
+				data_caungantrunghan_thieu_tien.push(Math.round(data.feed.entry.find(t=>t.title.$t =='N7').gs$cell.numericValue));
+				data_caungantrunghan_thieu_tien.push(Math.round(data.feed.entry.find(t=>t.title.$t =='N9').gs$cell.numericValue));
+				data_caungantrunghan_thieu_tien.push(Math.round(data.feed.entry.find(t=>t.title.$t =='N10').gs$cell.numericValue));
+				data_caungantrunghan_thieu_tien.push(Math.round(data.feed.entry.find(t=>t.title.$t =='N11').gs$cell.numericValue));
+				data_caungantrunghan_thieu_tien.push(Math.round(data.feed.entry.find(t=>t.title.$t =='N12').gs$cell.numericValue));
+				data_caungantrunghan_thieu_tien.push(Math.round(data.feed.entry.find(t=>t.title.$t =='N13').gs$cell.numericValue));
+				nhuCauKhanCapChartBar.update();
+				coCauNhuCauKhanCapQuyTheoTienChartPie.update();
+				nhuCauNganTrungHanChartBar.update();
+				coCauNhuCauNganTrungHanQuyTheoTienChartPie.update();
+				
+				var str_chitiet="<table class=\"styled-table\"><thead><td>"+data.feed.entry.find(t=>t.title.$t =='A3').content.$t+"</td><td>"+data.feed.entry.find(t=>t.title.$t =='B3').content.$t+"</td><td>"+data.feed.entry.find(t=>t.title.$t =='C3').content.$t+"</td><td>"+data.feed.entry.find(t=>t.title.$t =='E3').content.$t+"</td><td>"+data.feed.entry.find(t=>t.title.$t =='F3').content.$t+"</td><td>"+data.feed.entry.find(t=>t.title.$t =='G3').content.$t+"</td><td>"+data.feed.entry.find(t=>t.title.$t =='I3').content.$t+"</td><td>"+data.feed.entry.find(t=>t.title.$t =='J3').content.$t+"</td></tr></thead><tbody>";
+				var i;
+				for (i = 4; i < 39; i++) {
+					if(i==38){
+					str_chitiet+="<tfoot>";
+					}
+					str_chitiet+="<tr>";
+					_A=data.feed.entry.find(t=>t.title.$t =='A'+i);
+					_B=data.feed.entry.find(t=>t.title.$t =='B'+i);
+					_C=data.feed.entry.find(t=>t.title.$t =='C'+i);
+					_E=data.feed.entry.find(t=>t.title.$t =='E'+i);
+					_F=data.feed.entry.find(t=>t.title.$t =='F'+i);
+					_G=data.feed.entry.find(t=>t.title.$t =='G'+i);
+					_I=data.feed.entry.find(t=>t.title.$t =='I'+i);
+					_J=data.feed.entry.find(t=>t.title.$t =='J'+i); 
+					if(_A!=null){
+						str_chitiet+="<td>"+_A.content.$t+"</td>";
+					}
+					if(_B!=null){
+						str_chitiet+="<td>"+Math.round(_B.gs$cell.numericValue)+"</td>";
+					}
+					if(_C!=null){
+						str_chitiet+="<td>"+Math.round(_C.gs$cell.numericValue)+"</td>";
+					}
+					if(_E!=null){
+						str_chitiet+="<td>"+Math.round(_E.gs$cell.numericValue)+"</td>";
+					}
+					if(_F!=null){
+						str_chitiet+="<td>"+Math.round(_F.gs$cell.numericValue)+"</td>";
+					}
+					if(_G!=null){
+						str_chitiet+="<td>"+_G.content.$t+"</td>";
+					}
+					if(_I!=null){
+						str_chitiet+="<td>"+Math.round(_I.gs$cell.numericValue)+"</td>";
+					}
+					if(_J!=null){
+						str_chitiet+="<td>"+Math.round(_J.gs$cell.numericValue)+"</td>";
+					} 
+				
+					str_chitiet+="</tr>";
+					if(i==38){
+						str_chitiet+="</tfoot>";
+					}
+				}
+				
+				str_chitiet+="</tbody></table";
+				document.getElementById('_thongtinchitiet').innerHTML =str_chitiet; 
+			},
+		});
+	
+	};
 	
 	
 	
-	
-	
-	
-	
+	var url_summary="https://spreadsheets.google.com/feeds/cells/1jkIX-MT5lDCOopcrTOvWdi5knaMd2SHwNiwrw4uPxyc/1/public/values?alt=json";
+
+	$.ajax({
+		url:url_summary,
+		dataType:"jsonp",
+		success:function(data) { 
+		var i=1;
+		while(i<=590){
+			var p= data.feed.entry.find(t=>t.title.$t ==('A'+i)).content.$t;
+			var d= data.feed.entry.find(t=>t.title.$t ==('B'+i)).content.$t;
+			var c= data.feed.entry.find(t=>t.title.$t ==('C'+i)).content.$t;
+			if(p==layers[commune].feature.properties.name1 && d==layers[commune].feature.properties.name2 && c==layers[commune].feature.properties.name3){
+				str=data.feed.entry.find(t=>t.title.$t ==('F'+i)).content.$t;
+				//https://docs.google.com/spreadsheets/d/1yc2WYvynrhtFwrL-70y0_btCWo07lnBr0pV4JwG2Yvw/edit#gid=1135768361
+				str=str.substring(str.indexOf("/d/")+3);
+				str=(str.substring(0,str.indexOf("/")));
+				//gsheet_id=str;
+				fetch_data();
+				break;
+			}
+			i++;
+		}
+			 
+		},
+	});
+	 
 	
 	
 
@@ -304,13 +406,10 @@ coCauNhuCauNganTrungHanQuyTheoTienChartPie.update();
 	var hoGiaDinhChartBar = new Chart(hoGiaDinhChart, {
 		type: 'horizontalBar',
 		data: {
-			labels: ['Đội 1 Lâm Trường Ba Rền', 'Tiểu Khu 1', 'Tiểu Khu 2', 'Tiểu Khu 3', 'Tiểu Khu 4', 'Tiểu Khu 5', 
-			'Tiểu Khu 6', 'Tiểu Khu 7', 'Tiểu Khu 8', 'Tiểu Khu 9', 'Tiểu Khu 10', 
-			'Tiểu Khu Dũng Cảm', 'Tiểu Khu Hữu Nghị', 'Tiểu Khu Quyết Tiến', 'Tiểu Khu Sao Vàng', 
-			'Tiểu Khu Tháng Lợi', 'Tiểu Khu Thống Nhất', 'Tiểu Khu Tiền Phong', 'Tiểu Khu Truyền Thống', 'Tiểu Khu Xung Kích'],
+			labels: data_hogiadinh_lb,
 			datasets: [{
 				label: 'Số hộ gia đình trong từng khu vực',
-				data: [44, 17, 30, 44, 35, 37, 20, 34, 16, 40, 14, 34, 14, 15, 23, 13, 19, 39, 22, 35],
+				data: data_hogiadinh_nb,// [44, 17, 30, 44, 35, 37, 20, 34, 16, 40, 14, 34, 14, 15, 23, 13, 19, 39, 22, 35],
 				borderColor: 'rgb(25,58,141)',
 				backgroundColor: 'rgb(163,217,255)',
 				borderWidth: 1
