@@ -143,7 +143,7 @@ function zoom_based_layerchange() {
 				mouseover: highlightFeature,
 				mouseout: resetHighlight,
 				click: zoomToFeature
-			});        
+			});         
 			layer.on('click', function (e) {        
 				province=e.target.feature.properties.gid; 
 			}); 
@@ -154,12 +154,13 @@ function zoom_based_layerchange() {
 				mouseover: highlightFeature,
 				mouseout: resetHighlight,
 				click: zoomToFeature
-			}); 
+			});  
 			layer.on('click', function (e) {        
 				district=e.target.feature.properties.gid; 
 			}); 
 		}
-var layers = {};
+		
+		var layers = {};
 		function onEachFeature3(feature, layer) {
 			layer.on({
 				mouseover: highlightFeature,

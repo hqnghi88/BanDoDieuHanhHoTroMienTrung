@@ -60,13 +60,13 @@
 					<div id='map' style="border: 1px solid black;"></div>
 				</div>
 				<div class="col-lg-7 mb-3">
-					<h5 class="text-danger">THỊ TRẤN NÔNG TRƯỜNG VIỆT TRUNG - HUYỆN BỐ TRẠCH - TỈNH QUẢNG BÌNH</h5>
+					<div id="_region"><h5 class="text-danger"></h5></div>
 					<div style="line-height: 1.7;">
-						<b>Chủ tịch xã: </b>Phan Văn Trưng <br/>
-						<b>Người đại diện: </b>Phan Văn Trưng<br/>
-						<b>Số điện thoại: </b>0913 430 568 <br/>
-						<b>Dân số: </b> 3.759 người <br/>
-						<b>Số hộ gia đình: </b> 945 hộ <br/>
+						<b>Chủ tịch xã: </b>  <br/>
+						<b>Người đại diện: </b> <br/>
+						<b>Số điện thoại: </b> <br/>
+						<div id="_danso"><b>Dân số: </b></div>  
+						<div id="_hogiadinh"><b>Số hộ gia đình: </b></div>
 						<div>
 							<canvas id="hoGiaDinhChartBar" height="180"></canvas>
 						</div>
@@ -188,14 +188,26 @@
  
  
 	<script>
+	
+	if(commune){			 	
+		document.getElementById('_region').innerHTML ="<h5 class='text-danger'>"+layers[commune].feature.properties.name3+" - "+layers[commune].feature.properties.name2+" - "+layers[commune].feature.properties.name1+"</h5>";
+	
+	}
 	//https://docs.google.com/spreadsheets/d/1S4iJIgwq6Iq8JU-ShCliX_DfBglmcYzc0x1lCxK_cjg/edit?usp=sharing
-	var url = "https://spreadsheets.google.com/feeds/cells/1S4iJIgwq6Iq8JU-ShCliX_DfBglmcYzc0x1lCxK_cjg/od6/public/basic?alt=json";
+	//var url = "https://spreadsheets.google.com/feeds/cells/1S4iJIgwq6Iq8JU-ShCliX_DfBglmcYzc0x1lCxK_cjg/od6/public/basic?alt=json";
+	//var url="https://docs.google.com/spreadsheets/d/1S4iJIgwq6Iq8JU-ShCliX_DfBglmcYzc0x1lCxK_cjg/edit?usp=sharing"
+	var url_thongtin="https://spreadsheets.google.com/feeds/cells/1S4iJIgwq6Iq8JU-ShCliX_DfBglmcYzc0x1lCxK_cjg/2/public/values?alt=json";
+	//var url="https://spreadsheets.google.com/feeds/cells/1HeUDy-zQkDyjwz_0wt7TFtsarBAII5Q8T7Tb4be8FH8/2/public/values?alt=json";
+	
 $.ajax({
-    url:url,
+    url:url_thongtin,
     dataType:"jsonp",
     success:function(data) {
         // data.feed.entry is an array of objects that represent each cell
-		console.log(data.feed.entry);
+		//console.log(data.feed.entry);
+		
+		document.getElementById('_danso').innerHTML ="<b>Dân số: </b> "+data.feed.entry[14].content.$t+" người";
+		document.getElementById('_hogiadinh').innerHTML ="<b>Số hộ gia đình: </b> "+data.feed.entry[28].content.$t+" hộ";
 /*
 		var i;
 for (i = 1; i < 80; i++) {
@@ -204,6 +216,83 @@ for (i = 1; i < 80; i++) {
 */
     },
 });
+	
+	
+	var url_report="https://spreadsheets.google.com/feeds/cells/1S4iJIgwq6Iq8JU-ShCliX_DfBglmcYzc0x1lCxK_cjg/13/public/values?alt=json"; 
+	var data_caukhancap=[];
+	var data_caukhancap_dapung=[];
+	var data_caukhancap_thieu_tien=[];
+	var data_caungantrunghan=[];
+	var data_caungantrunghan_dapung=[];
+	var data_caungantrunghan_thieu_tien=[];
+$.ajax({
+    url:url_report,
+    dataType:"jsonp",
+    success:function(data) {
+        // data.feed.entry is an array of objects that represent each cell
+		//console.log(data.feed.entry);
+		data_caukhancap.push(data.feed.entry.find(t=>t.title.$t ==='Y29').gs$cell.numericValue);
+		data_caukhancap.push(data.feed.entry.find(t=>t.title.$t ==='Y30').gs$cell.numericValue);
+		data_caukhancap.push(data.feed.entry.find(t=>t.title.$t ==='Y31').gs$cell.numericValue);
+		data_caukhancap.push(data.feed.entry.find(t=>t.title.$t ==='Y32').gs$cell.numericValue);
+		data_caukhancap.push(data.feed.entry.find(t=>t.title.$t ==='Y33').gs$cell.numericValue);
+		data_caukhancap.push(data.feed.entry.find(t=>t.title.$t ==='Y34').gs$cell.numericValue);
+		data_caukhancap.push(data.feed.entry.find(t=>t.title.$t ==='Y35').gs$cell.numericValue);
+		
+		data_caukhancap_dapung.push(data.feed.entry.find(t=>t.title.$t ==='Z29').gs$cell.numericValue);
+		data_caukhancap_dapung.push(data.feed.entry.find(t=>t.title.$t ==='Z30').gs$cell.numericValue);
+		data_caukhancap_dapung.push(data.feed.entry.find(t=>t.title.$t ==='Z31').gs$cell.numericValue);
+		data_caukhancap_dapung.push(data.feed.entry.find(t=>t.title.$t ==='Z32').gs$cell.numericValue);
+		data_caukhancap_dapung.push(data.feed.entry.find(t=>t.title.$t ==='Z33').gs$cell.numericValue);
+		data_caukhancap_dapung.push(data.feed.entry.find(t=>t.title.$t ==='Z34').gs$cell.numericValue);
+		data_caukhancap_dapung.push(data.feed.entry.find(t=>t.title.$t ==='Z35').gs$cell.numericValue);
+		
+		data_caukhancap_thieu_tien.push(data.feed.entry.find(t=>t.title.$t ==='Y19').gs$cell.numericValue);
+		data_caukhancap_thieu_tien.push(data.feed.entry.find(t=>t.title.$t ==='Y20').gs$cell.numericValue);
+		data_caukhancap_thieu_tien.push(data.feed.entry.find(t=>t.title.$t ==='Y21').gs$cell.numericValue);
+		data_caukhancap_thieu_tien.push(data.feed.entry.find(t=>t.title.$t ==='Y22').gs$cell.numericValue);
+		data_caukhancap_thieu_tien.push(data.feed.entry.find(t=>t.title.$t ==='Y23').gs$cell.numericValue);
+		data_caukhancap_thieu_tien.push(data.feed.entry.find(t=>t.title.$t ==='Y24').gs$cell.numericValue); 
+		
+		
+		
+		
+		data_caungantrunghan.push(data.feed.entry.find(t=>t.title.$t ==='M29').gs$cell.numericValue);
+		data_caungantrunghan.push(data.feed.entry.find(t=>t.title.$t ==='M30').gs$cell.numericValue);
+		data_caungantrunghan.push(data.feed.entry.find(t=>t.title.$t ==='M31').gs$cell.numericValue);
+		data_caungantrunghan.push(data.feed.entry.find(t=>t.title.$t ==='M32').gs$cell.numericValue);
+		data_caungantrunghan.push(data.feed.entry.find(t=>t.title.$t ==='M33').gs$cell.numericValue);
+		data_caungantrunghan.push(data.feed.entry.find(t=>t.title.$t ==='M34').gs$cell.numericValue);
+		data_caungantrunghan.push(data.feed.entry.find(t=>t.title.$t ==='M35').gs$cell.numericValue);
+		data_caungantrunghan.push(data.feed.entry.find(t=>t.title.$t ==='M36').gs$cell.numericValue);
+		
+		data_caungantrunghan_dapung.push(data.feed.entry.find(t=>t.title.$t ==='N29').gs$cell.numericValue);
+		data_caungantrunghan_dapung.push(data.feed.entry.find(t=>t.title.$t ==='N30').gs$cell.numericValue);
+		data_caungantrunghan_dapung.push(data.feed.entry.find(t=>t.title.$t ==='N31').gs$cell.numericValue);
+		data_caungantrunghan_dapung.push(data.feed.entry.find(t=>t.title.$t ==='N32').gs$cell.numericValue);
+		data_caungantrunghan_dapung.push(data.feed.entry.find(t=>t.title.$t ==='N33').gs$cell.numericValue);
+		data_caungantrunghan_dapung.push(data.feed.entry.find(t=>t.title.$t ==='N34').gs$cell.numericValue);
+		data_caungantrunghan_dapung.push(data.feed.entry.find(t=>t.title.$t ==='N35').gs$cell.numericValue);
+		data_caungantrunghan_dapung.push(data.feed.entry.find(t=>t.title.$t ==='N36').gs$cell.numericValue);
+		
+		data_caungantrunghan_thieu_tien.push(data.feed.entry.find(t=>t.title.$t ==='N4').gs$cell.numericValue);
+		data_caungantrunghan_thieu_tien.push(data.feed.entry.find(t=>t.title.$t ==='N7').gs$cell.numericValue);
+		data_caungantrunghan_thieu_tien.push(data.feed.entry.find(t=>t.title.$t ==='N9').gs$cell.numericValue);
+		data_caungantrunghan_thieu_tien.push(data.feed.entry.find(t=>t.title.$t ==='N10').gs$cell.numericValue);
+		data_caungantrunghan_thieu_tien.push(data.feed.entry.find(t=>t.title.$t ==='N11').gs$cell.numericValue);
+		data_caungantrunghan_thieu_tien.push(data.feed.entry.find(t=>t.title.$t ==='N12').gs$cell.numericValue);
+		data_caungantrunghan_thieu_tien.push(data.feed.entry.find(t=>t.title.$t ==='N13').gs$cell.numericValue);
+nhuCauKhanCapChartBar.update();
+coCauNhuCauKhanCapQuyTheoTienChartPie.update();
+nhuCauNganTrungHanChartBar.update();
+coCauNhuCauNganTrungHanQuyTheoTienChartPie.update();
+		//document.getElementById('_danso').innerHTML ="<b>Dân số: </b> "+data.feed.entry[14].content.$t+" người";
+		//document.getElementById('_hogiadinh').innerHTML ="<b>Số hộ gia đình: </b> "+data.feed.entry[28].content.$t+" hộ";
+    },
+});
+	
+	
+	
 	
 	
 	
@@ -264,82 +353,19 @@ for (i = 1; i < 80; i++) {
 </script>
 
 <script>
-var coCauNhuCauKhanCapQuyTheoTienPie = document.getElementById('coCauNhuCauKhanCapQuyTheoTienChartPie').getContext('2d');
-var coCauNhuCauKhanCapQuyTheoTienChartPie = new Chart(coCauNhuCauKhanCapQuyTheoTienPie, {
-    type: 'pie',
-    data: {
-        labels: ['Lương thực', 'Nước sạch', 'Đồ giữ ấm & vệ sinh cá nhân', 'Tái thiết trước mắt', 'Phòng chống bão lũ', 'Tiền mặt'],
-		datasets: [{
-            label: '% quy đổi ra tiền',
-            data: [50, 89, 245, 657, 186, 1130],
-            backgroundColor: [
-                'rgba(38,68,120,0.5)', 'rgba(237,125,49,0.5)', 'rgba(165,165,165,0.5)', 'rgba(255,192,0,0.5)', 'rgba(91,155,213,0.5)', 'rgba(112,173,71,0.5)', 
-
-			],
-            borderColor: [
-                'rgb(38,68,120)', 
-				'rgb(237,125,49)', 
-				'rgb(165,165,165)', 
-				'rgb(255,192,0)', 
-				'rgb(91,155,213)', 
-				'rgb(112,173,71)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        animation:{
-			animateRotate:true
-		},
-		legend: {
-			position: 'right'
-		}
-    }
-});
-</script>
-
-<script>
-var coCauNhuCauNganTrungHanQuyTheoTienPie = document.getElementById('coCauNhuCauNganTrungHanQuyTheoTienChartPie').getContext('2d');
-var coCauNhuCauNganTrungHanQuyTheoTienChartPie = new Chart(coCauNhuCauNganTrungHanQuyTheoTienPie, {
-    type: 'pie',
-    data: {
-        labels: ['Lương thực', 'Nước sạch', 'Đồ giữ ấm & vệ sinh cá nhân', 'Tái thiết trước mắt', 'Khôi phục sản xuất kinh doanh (giống, vốn)', 'Phòng chống bão lũ', 'Tiền mặt'],
-		datasets: [{
-            label: '% quy đổi ra tiền',
-            data: [80, 220, 245, 657, 1174, 615, 1130],
-            backgroundColor: [
-                'rgba(38,68,120,0.5)', 'rgba(237,125,49,0.5)', 'rgba(165,165,165,0.5)', 'rgba(255,192,0,0.5)', 'rgba(146,208,80,0.5)', 'rgba(91,155,213,0.5)', 'rgba(112,173,71,0.5)'
-			],
-            borderColor: [
-                'rgb(38,68,120)', 'rgb(237,125,49)', 'rgb(165,165,165)', 'rgb(255,192,0)', 'rgb(146,208,80)', 'rgb(91,155,213)','rgb(112,173,71)'],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        animation:{
-			animateRotate:true
-		},
-		legend: {
-			position: 'right'
-		}
-    }
-});
-</script>
-
-<script>
 	var nhuCauKhanCapChart = document.getElementById('nhuCauKhanCapChartBar').getContext('2d');
 	var nhuCauKhanCapChartBar = new Chart(nhuCauKhanCapChart, {
 		type: 'bar',
 		data: {
 			datasets: [{
 				label: 'Cầu khẩn cấp',
-				data: [2714, 24, 121, 282, 682, 256, 1350],
+				data:data_caukhancap,// [2714, 24, 121, 282, 682, 256, 1350],
 				borderColor: ['rgb(192,0,0)', 'rgb(255,20,52)', 'rgb(255,20,52)', 'rgb(255,20,52)', 'rgb(255,20,52)', 'rgb(255,20,52)', 'rgb(255,20,52)', ],
 				backgroundColor: ['rgb(192,0,0)', 'rgb(255,179,194)', 'rgb(255,179,194)', 'rgb(255,179,194)', 'rgb(255,179,194)', 'rgb(255,179,194)', 'rgb(255,179,194)'],
 				borderWidth: 1
 			},{
 				label: 'Cầu đã được đáp ứng',
-				data: [407, 24, 32, 36, 25, 70, 220],
+				data: data_caukhancap_dapung,//[407, 24, 32, 36, 25, 70, 220],
 				backgroundColor: ['rgb(84,130,53)', 'rgb(146,208,80)', 'rgb(146,208,80)', 'rgb(146,208,80)', 'rgb(146,208,80)', 'rgb(146,208,80)', 'rgb(146,208,80)'],
 				borderColor: 'rgb(84,130,53)',
 				borderWidth: 1,
@@ -378,19 +404,55 @@ var coCauNhuCauNganTrungHanQuyTheoTienChartPie = new Chart(coCauNhuCauNganTrungH
 </script>
 
 <script>
+var coCauNhuCauKhanCapQuyTheoTienPie = document.getElementById('coCauNhuCauKhanCapQuyTheoTienChartPie').getContext('2d');
+var coCauNhuCauKhanCapQuyTheoTienChartPie = new Chart(coCauNhuCauKhanCapQuyTheoTienPie, {
+    type: 'pie',
+    data: {
+        labels: ['Lương thực', 'Nước sạch', 'Đồ giữ ấm & vệ sinh cá nhân', 'Tái thiết trước mắt', 'Phòng chống bão lũ', 'Tiền mặt'],
+		datasets: [{
+            label: '% quy đổi ra tiền',
+            data: data_caukhancap_thieu_tien,//[50, 89, 245, 657, 186, 1130],
+            backgroundColor: [
+                'rgba(38,68,120,0.5)', 'rgba(237,125,49,0.5)', 'rgba(165,165,165,0.5)', 'rgba(255,192,0,0.5)', 'rgba(91,155,213,0.5)', 'rgba(112,173,71,0.5)', 
+
+			],
+            borderColor: [
+                'rgb(38,68,120)', 
+				'rgb(237,125,49)', 
+				'rgb(165,165,165)', 
+				'rgb(255,192,0)', 
+				'rgb(91,155,213)', 
+				'rgb(112,173,71)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        animation:{
+			animateRotate:true
+		},
+		legend: {
+			position: 'right'
+		}
+    }
+});
+</script>
+
+
+<script>
 	var nhuCauNganTrungHanChart = document.getElementById('nhuCauNganTrungHanChartBar').getContext('2d');
 	var nhuCauNganTrungHanChartBar = new Chart(nhuCauNganTrungHanChart, {
 		type: 'bar',
 		data: {
 			datasets: [{
-				label: 'Cầu khẩn cấp',
-				data: [2714, 24, 121, 282, 682, 256, 1350],
+				label: 'Cầu ngắn, trung hạn',
+				data: data_caungantrunghan,//[2714, 24, 121, 282, 682, 256, 1350],
 				borderColor: ['rgb(192,0,0)', 'rgb(255,20,52)', 'rgb(255,20,52)', 'rgb(255,20,52)', 'rgb(255,20,52)', 'rgb(255,20,52)', 'rgb(255,20,52)', ],
 				backgroundColor: ['rgb(192,0,0)', 'rgb(255,179,194)', 'rgb(255,179,194)', 'rgb(255,179,194)', 'rgb(255,179,194)', 'rgb(255,179,194)', 'rgb(255,179,194)'],
 				borderWidth: 1
 			},{
 				label: 'Cầu đã được đáp ứng',
-				data: [407, 24, 32, 36, 25, 70, 220],
+				data: data_caungantrunghan_dapung,//[407, 24, 32, 36, 25, 70, 220],
 				backgroundColor: ['rgb(84,130,53)', 'rgb(146,208,80)', 'rgb(146,208,80)', 'rgb(146,208,80)', 'rgb(146,208,80)', 'rgb(146,208,80)', 'rgb(146,208,80)'],
 				borderColor: 'rgb(84,130,53)',
 				borderWidth: 1,
@@ -429,5 +491,32 @@ var coCauNhuCauNganTrungHanQuyTheoTienChartPie = new Chart(coCauNhuCauNganTrungH
 </script>
 
 	
+<script>
+var coCauNhuCauNganTrungHanQuyTheoTienPie = document.getElementById('coCauNhuCauNganTrungHanQuyTheoTienChartPie').getContext('2d');
+var coCauNhuCauNganTrungHanQuyTheoTienChartPie = new Chart(coCauNhuCauNganTrungHanQuyTheoTienPie, {
+    type: 'pie',
+    data: {
+        labels: ['Lương thực', 'Nước sạch', 'Đồ giữ ấm & vệ sinh cá nhân', 'Tái thiết trước mắt', 'Khôi phục sản xuất kinh doanh (giống, vốn)', 'Phòng chống bão lũ', 'Tiền mặt'],
+		datasets: [{
+            label: '% quy đổi ra tiền',
+            data: data_caungantrunghan_thieu_tien,//[80, 220, 245, 657, 1174, 615, 1130],
+            backgroundColor: [
+                'rgba(38,68,120,0.5)', 'rgba(237,125,49,0.5)', 'rgba(165,165,165,0.5)', 'rgba(255,192,0,0.5)', 'rgba(146,208,80,0.5)', 'rgba(91,155,213,0.5)', 'rgba(112,173,71,0.5)'
+			],
+            borderColor: [
+                'rgb(38,68,120)', 'rgb(237,125,49)', 'rgb(165,165,165)', 'rgb(255,192,0)', 'rgb(146,208,80)', 'rgb(91,155,213)','rgb(112,173,71)'],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        animation:{
+			animateRotate:true
+		},
+		legend: {
+			position: 'right'
+		}
+    }
+});
+</script>
 	</body>
 </html>
