@@ -38,7 +38,7 @@
 		info.update = function (props) {
 		
 			this._div.innerHTML = '' +  (props ?
-				'<b>' + props.name + '</b><br />' + props.density + '.'
+				'<b>' + props.name + '</b><br />' + getRisk(props.score) + '.'
 				: ''); 
 		};
 
@@ -85,16 +85,20 @@ function zoom_based_layerchange() {
 }
 		// get color depending on population density value
 		function getColor(d) {
-			return d > 1000 ? '#800026' :
-					d > 500  ? '#BD0026' :
-					d > 200  ? '#E31A1C' :
-					d > 100  ? '#FC4E2A' :
-					d > 50   ? '#FD8D3C' :
-					d > 20   ? '#FEB24C' :
-					d > 10   ? '#FED976' :
-								'#FFEDA0';
+			return d > 90 ? '#FF00FF' :
+					d > 70  ? '#AA00FF' :
+					d > 50  ? '#5500FF' :
+					d > 20  ? '#002AFF' : 
+							  '#ECFFEC';
 		}
-
+function getRisk(d) {
+	// ptype = ["","Bình thường mới", "Nguy cơ", "Nguy cơ cao", "Nguy cơ rất cao"]
+	return d > 90 ? "Nguy cơ rất cao" :
+		d > 70 ? "Nguy cơ cao" :
+			d > 50 ? "Nguy cơ" :
+				d > 20 ? "Bình thường mới":
+					'';
+}
 		function style(feature) {
 			return {
 				weight: 2,
@@ -102,7 +106,7 @@ function zoom_based_layerchange() {
 				color: 'white',
 				dashArray: '3',
 				fillOpacity: 0.7,
-				fillColor: getColor(feature.properties.density)
+				fillColor: getColor(feature.properties.score)
 			};
 		}
 
@@ -145,7 +149,9 @@ function zoom_based_layerchange() {
 				click: zoomToFeature
 			});         
 			layer.on('click', function (e) {        
-				province=e.target.feature.properties.gid; 
+				province=e.target.feature.properties.name;  
+				str=(mapVN[province]).toString().replace(/,/g, '</br>');
+				document.getElementById("thelist").innerHTML="<h5 class=\"text-danger\">Danh sách quận, huyện của "+province+"</h5></br>"+str;
 			}); 
 		}
 
@@ -156,7 +162,9 @@ function zoom_based_layerchange() {
 				click: zoomToFeature
 			});  
 			layer.on('click', function (e) {        
-				district=e.target.feature.properties.gid; 
+				district=e.target.feature.properties.name; 
+				str=(mapVN[province]).toString().replace(/,/g, '</br>');
+				document.getElementById("thelist").innerHTML="<h5 class=\"text-danger\">Danh sách xã, phường của "+province+"</h5></br>"+str; 
 			}); 
 		}
 		
@@ -189,9 +197,7 @@ function zoom_based_layerchange() {
 		adm3 = L.geoJson(mydata3, {
 			style: style,
 			onEachFeature: onEachFeature3
-		}).on('click', function (e) { 
-			window.location.href ="4-DaChonPhuongXa.html?p="+province+"&d="+district+"&c="+commune; 
-		  });//.addTo(map);
+		});
 		   
 		map.attributionControl.addAttribution('Data &copy; <a href="http://antoancovid.dtt.vn/admin/hotro">iNhanDao</a>');
 
@@ -201,7 +207,8 @@ function zoom_based_layerchange() {
 		legend.onAdd = function (map) {
 
 			var div = L.DomUtil.create('div', 'info legend'),
-				grades = [0, 10, 20, 50, 100, 200, 500, 1000],
+				grades = [0, 20,  50, 70, 90],
+				ptype=["no","new","risk","critical"],
 				labels = [],
 				from, to;
 
@@ -211,7 +218,7 @@ function zoom_based_layerchange() {
 
 				labels.push(
 					'<i style="background:' + getColor(from + 1) + '"></i> ' +
-					from + (to ? '&ndash;' + to : '+'));
+					ptype[i]);
 			}
 
 			div.innerHTML = labels.join('<br>');

@@ -208,7 +208,8 @@
 	}
 			
 	
-	var gsheet_id="1S4iJIgwq6Iq8JU-ShCliX_DfBglmcYzc0x1lCxK_cjg";
+	//var gsheet_id="1S4iJIgwq6Iq8JU-ShCliX_DfBglmcYzc0x1lCxK_cjg";
+	var gsheet_id="1_TKYFJ69Uh-s0i6fk8A7mvecTu76d2oDtLg0ZB-2Dug";
 	var data_hogiadinh_lb=[]; 
 	var data_hogiadinh_nb=[];
 	var data_caukhancap=[];
@@ -217,29 +218,28 @@
 	var data_caungantrunghan=[];
 	var data_caungantrunghan_dapung=[];
 	var data_caungantrunghan_thieu_tien=[];
+
+//https://sheets.googleapis.com/v4/spreadsheets/spreadsheetId/values:batchGet?
+//            ranges=Sheet1!B:B&ranges=Sheet1!D:D&valueRenderOption=UNFORMATTED_VALUES?majorDimension=COLUMNS
+	
+//https://docs.google.com/spreadsheets/d/e/2PACX-1vSN853OXwVtDkBefT-Qn0zT1__qM1ixugttOKRNxTTUkH1OQf78iENetlztkqSb3ErCOItVQoF_OiDh/pub?gid=687890864&single=true&output=csv
+	//https://docs.google.com/spreadsheets/d/e/2PACX-1vSg-0OHJ6f40pGXNlZ2d9DxuMf2d-7bPOSh4VYWMV1_YpZEw506e1DaT2VWiso5DQ/pub?gid=687890864&single=true&output=csv
+	
 	//https://docs.google.com/spreadsheets/d/1S4iJIgwq6Iq8JU-ShCliX_DfBglmcYzc0x1lCxK_cjg/edit?usp=sharing
 	//var url = "https://spreadsheets.google.com/feeds/cells/1S4iJIgwq6Iq8JU-ShCliX_DfBglmcYzc0x1lCxK_cjg/od6/public/basic?alt=json";
 	//var url="https://docs.google.com/spreadsheets/d/1S4iJIgwq6Iq8JU-ShCliX_DfBglmcYzc0x1lCxK_cjg/edit?usp=sharing"
 	function fetch_data(){ 
-		var url_lienhe="https://spreadsheets.google.com/feeds/cells/"+gsheet_id+"/1/public/values?alt=json";
+		var url_lienhe="https://spreadsheets.google.com/feeds/cells/"+gsheet_id+"/1/public/values?alt=csv";
 
 		$.ajax({
 			url:url_lienhe,
 			dataType:"jsonp",
 			success:function(data) {
-				document.getElementById('_chutich').innerHTML ="<b>Chủ tịch xã: </b> "+data.feed.entry.find(t=>t.title.$t ==='B7').content.$t+"";
-				document.getElementById('_nguoidaidien').innerHTML ="<b>Người đại diện: </b> "+data.feed.entry.find(t=>t.title.$t ==='B12').content.$t+"";
-				document.getElementById('_sodt').innerHTML ="<b>Số điện thoại: </b> "+data.feed.entry.find(t=>t.title.$t ==='B13').content.$t+"";
-			},
-		});
-			
-			
-		var url_thongtin="https://spreadsheets.google.com/feeds/cells/"+gsheet_id+"/2/public/values?alt=json";
-
-		$.ajax({
-			url:url_thongtin,
-			dataType:"jsonp",
-			success:function(data) {
+			console.log(data);
+				document.getElementById('_chutich').innerHTML ="<b>Chủ tịch xã: </b> "+data.feed.entry.find(t=>t.title.$t ==='B2').content.$t+"";
+				document.getElementById('_nguoidaidien').innerHTML ="<b>Người đại diện: </b> "+data.feed.entry.find(t=>t.title.$t ==='C2').content.$t+"";
+				document.getElementById('_sodt').innerHTML ="<b>Số điện thoại: </b> "+data.feed.entry.find(t=>t.title.$t ==='D2').content.$t+"";
+			 
 				document.getElementById('_danso').innerHTML ="<b>Dân số: </b> "+data.feed.entry.find(t=>t.title.$t ==='C9').content.$t+" người";
 				document.getElementById('_hogiadinh').innerHTML ="<b>Số hộ gia đình: </b> "+data.feed.entry.find(t=>t.title.$t ==='C13').content.$t+" hộ";
 				var i=25;
@@ -249,19 +249,7 @@
 					data_hogiadinh_nb.push(Math.round(data.feed.entry.find(t=>t.title.$t ==('C'+i)).gs$cell.numericValue));
 					i++;
 				} 
-				hoGiaDinhChartBar.update();
-			},
-		});
-			
-			
-		var url_report="https://spreadsheets.google.com/feeds/cells/"+gsheet_id+"/13/public/values?alt=json"; 
-			
-		$.ajax({
-			url:url_report,
-			dataType:"jsonp",
-			success:function(data) {
-				// data.feed.entry is an array of objects that represent each cell
-				//console.log(data.feed.entry);
+				hoGiaDinhChartBar.update(); 
 				data_caukhancap.push(Math.round(data.feed.entry.find(t=>t.title.$t =='Y29').gs$cell.numericValue));
 				data_caukhancap.push(Math.round(data.feed.entry.find(t=>t.title.$t =='Y30').gs$cell.numericValue));
 				data_caukhancap.push(Math.round(data.feed.entry.find(t=>t.title.$t =='Y31').gs$cell.numericValue));
@@ -373,12 +361,16 @@
 	
 	
 	
-	var url_summary="https://spreadsheets.google.com/feeds/cells/1jkIX-MT5lDCOopcrTOvWdi5knaMd2SHwNiwrw4uPxyc/1/public/values?alt=json";
+//	var url_summary="https://spreadsheets.google.com/feeds/cells/1jkIX-MT5lDCOopcrTOvWdi5knaMd2SHwNiwrw4uPxyc/1/public/values?alt=json";
+	var url_summary="https://spreadsheets.google.com/feeds/cells/1_TKYFJ69Uh-s0i6fk8A7mvecTu76d2oDtLg0ZB-2Dug/1/public/values?alt=json";
 
 	$.ajax({
 		url:url_summary,
 		dataType:"jsonp",
-		success:function(data) { 
+		success:function(data) {
+
+				fetch_data();	
+/*				
 		var i=1;
 		while(i<=590){
 			var p= data.feed.entry.find(t=>t.title.$t ==('A'+i)).content.$t;
@@ -395,7 +387,7 @@
 			}
 			i++;
 		}
-			 
+			 */
 		},
 	});
 	 
